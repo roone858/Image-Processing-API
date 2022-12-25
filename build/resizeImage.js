@@ -27,8 +27,13 @@ const isImageExsist = (pathToCkeck) => {
 exports.isImageExsist = isImageExsist;
 const resizeImage = (inputFileName, width, height) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("creating new output file");
-    yield (0, sharp_1.default)(path_1.default.resolve(`src/images/${inputFileName}.jpg`))
-        .resize(width, height)
-        .toFile(path_1.default.resolve(`src/images/resized/${inputFileName}${height}x${width}.jpg`));
+    try {
+        yield (0, sharp_1.default)(path_1.default.resolve(`src/images/${inputFileName}.jpg`))
+            .resize(width, height)
+            .toFile(path_1.default.resolve(`src/images/resized/${inputFileName}${height}x${width}.jpg`));
+    }
+    catch (err) {
+        throw new Error("Input file is missing");
+    }
 });
 exports.resizeImage = resizeImage;

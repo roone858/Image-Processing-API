@@ -14,4 +14,7 @@ describe("images", () => {
     it("Resolves succesfully when provided the right filename, height and width parameters", () => __awaiter(void 0, void 0, void 0, function* () {
         yield expectAsync((0, resizeImage_1.resizeImage)(`fjord`, 200, 200)).toBeResolved();
     }));
+    it("Throws a missing input error if the wrong filename is provided", () => __awaiter(void 0, void 0, void 0, function* () {
+        yield expectAsync((0, resizeImage_1.resizeImage)("alaska", 200, 200)).toBeRejectedWithError(Error, "Input file is missing");
+    }));
 });

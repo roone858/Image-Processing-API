@@ -22,12 +22,21 @@ app.get("/", (req, res) => {
     res.send("http://localhost:3000/api/image/resize/?width=(w)&height=(h)&filename=(filename)");
 });
 app.get("/api/image/resize/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const inputPath = path_1.default.resolve(`src/images/${req.query.filename}.jpg`);
-    const outputPath = path_1.default.resolve(`src/images/resized/${req.query.filename}${req.query.height}x${req.query.width}.jpg`);
+    const inputPath = path_1.default.join(__dirname + `/images/${req.query.filename}.jpg`);
+    const outputPath = path_1.default.join(__dirname +
+        `/images/resized/${req.query.filename}${req.query.height}x${req.query.width}.jpg`);
     const filename = req.query.filename;
     const width = Number(req.query.width);
     const height = Number(req.query.height);
     try {
+        if (Number.isNaN(width) || width < 1) {
+            res.send("Please provide a positive numerical value for the 'width' query segment.");
+            return;
+        }
+        if (Number.isNaN(height) || height < 1) {
+            res.send("Please provide a positive numerical value for the 'height' query segment.");
+            return;
+        }
         if (!fs_1.default.existsSync(outputPath)) {
             if ((0, resizeImage_1.isImageExsist)(inputPath)) {
                 yield (0, resizeImage_1.resizeImage)(`${filename}`, width, height);

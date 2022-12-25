@@ -14,9 +14,15 @@ export const resizeImage = async (
   height: number
 ): Promise<void> => {
   console.log("creating new output file");
-  await sharp(path.resolve(`src/images/${inputFileName}.jpg`))
-    .resize(width, height)
-    .toFile(
-      path.resolve(`src/images/resized/${inputFileName}${height}x${width}.jpg`)
-    );
+  try {
+    await sharp(path.resolve(`src/images/${inputFileName}.jpg`))
+      .resize(width, height)
+      .toFile(
+        path.resolve(
+          `src/images/resized/${inputFileName}${height}x${width}.jpg`
+        )
+      );
+  } catch (err) {
+    throw new Error("Input file is missing");
+  }
 };

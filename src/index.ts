@@ -10,16 +10,28 @@ app.get("/", (req, res) => {
     "http://localhost:3000/api/image/resize/?width=(w)&height=(h)&filename=(filename)"
   );
 });
-
 app.get("/api/image/resize/", async (req: Request, res: Response) => {
-  const inputPath = path.resolve(`src/images/${req.query.filename}.jpg`);
-  const outputPath = path.resolve(
-    `src/images/resized/${req.query.filename}${req.query.height}x${req.query.width}.jpg`
+  const inputPath = path.join(__dirname + `/images/${req.query.filename}.jpg`);
+  const outputPath = path.join(
+    __dirname +
+      `/images/resized/${req.query.filename}${req.query.height}x${req.query.width}.jpg`
   );
   const filename = req.query.filename;
   const width = Number(req.query.width);
   const height = Number(req.query.height);
   try {
+    if (Number.isNaN(width) || width < 1) {
+      res.send(
+        "Please provide a positive numerical value for the 'width' query segment."
+      );
+      return;
+    }
+    if (Number.isNaN(height) || height < 1) {
+      res.send(
+        "Please provide a positive numerical value for the 'height' query segment."
+      );
+      return;
+    }
     if (!fs.existsSync(outputPath)) {
       if (isImageExsist(inputPath)) {
         await resizeImage(`${filename}`, width, height);
@@ -37,7 +49,6 @@ app.get("/api/image/resize/", async (req: Request, res: Response) => {
     }
   }
 });
-
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
