@@ -42,7 +42,8 @@ app.get("/api/image/resize/", (req, res) => __awaiter(void 0, void 0, void 0, fu
                 yield (0, resizeImage_1.resizeImage)(`${filename}`, width, height);
             }
             else {
-                res.send("image not exists");
+                res.writeHead(404);
+                res.write("opps this doesn't exist - 404");
                 return;
             }
         }

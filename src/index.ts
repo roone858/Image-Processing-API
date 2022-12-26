@@ -36,11 +36,12 @@ app.get("/api/image/resize/", async (req: Request, res: Response) => {
       if (isImageExsist(inputPath)) {
         await resizeImage(`${filename}`, width, height);
       } else {
-        res.send("image not exists");
+        res.status(404).send("Oh uh, something went wrong File not found");
         return;
       }
     }
-    res.sendFile(outputPath);
+
+    res.status(200).sendFile(outputPath);
   } catch (err) {
     if (err instanceof Error) {
       res.render("helow", { message: err.message });
